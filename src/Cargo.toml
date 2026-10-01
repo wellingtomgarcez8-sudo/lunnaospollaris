@@ -1,0 +1,5 @@
+[workspace]
+members = [
+  "lunna-compositor",
+]
+resolver = "2"
