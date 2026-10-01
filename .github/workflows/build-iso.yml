@@ -1,0 +1,59 @@
+name: Build LunnaOS Polaris ISO
+
+on:
+  workflow_dispatch:
+    inputs:
+      platform:
+        description: Runner architecture
+        required: true
+        default: amd64
+        type: choice
+        options:
+          - amd64
+  pull_request:
+    branches: [main]
+    paths:
+      - "iso.toml"
+      - ".github/workflows/build-iso.yml"
+      - "Justfile"
+      - "Containerfile"
+      - "build_files/**"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  build-iso:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      packages: read
+      id-token: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Maximize build space
+        uses: ublue-os/remove-unwanted-software@v9
+        with:
+          remove-codeql: true
+
+      - name: Build ISO
+        id: build
+        uses: ublue-os/bootc-image-builder-action@main
+        with:
+          bootc-image-builder-image: ghcr.io/centos-workstation/bootc-image-builder:latest
+          use-librepo: true
+          config-file: ./iso.toml
+          image: ghcr.io/wellingtomgarcez8-sudo/lunnaospollaris:latest
+
+      - name: Upload ISO artifact
+        if: github.event_name != 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: lunnaospollaris-uefi-iso
+          path: ${{ steps.build.outputs.output-directory }}
+          if-no-files-found: error
+          compression-level: 0
