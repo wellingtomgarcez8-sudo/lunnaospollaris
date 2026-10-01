@@ -2,22 +2,11 @@ name: Build LunnaOS Polaris ISO
 
 on:
   workflow_dispatch:
-    inputs:
-      platform:
-        description: Runner architecture
-        required: true
-        default: amd64
-        type: choice
-        options:
-          - amd64
-  pull_request:
+  push:
     branches: [main]
     paths:
       - "iso.toml"
       - ".github/workflows/build-iso.yml"
-      - "Justfile"
-      - "Containerfile"
-      - "build_files/**"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref || github.run_id }}
@@ -25,6 +14,7 @@ concurrency:
 
 jobs:
   build-iso:
+    name: Build UEFI installer ISO
     runs-on: ubuntu-24.04
     permissions:
       contents: read
@@ -44,13 +34,12 @@ jobs:
         id: build
         uses: ublue-os/bootc-image-builder-action@main
         with:
-          bootc-image-builder-image: ghcr.io/centos-workstation/bootc-image-builder:latest
+          bootc-image-builder-image: quay.io/centos-bootc/bootc-image-builder:latest
           use-librepo: true
           config-file: ./iso.toml
           image: ghcr.io/wellingtomgarcez8-sudo/lunnaospollaris:latest
 
       - name: Upload ISO artifact
-        if: github.event_name != 'pull_request'
         uses: actions/upload-artifact@v4
         with:
           name: lunnaospollaris-uefi-iso
