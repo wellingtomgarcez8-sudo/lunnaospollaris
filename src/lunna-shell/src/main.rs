@@ -254,8 +254,6 @@ fn build_dock(app: &Application) {
 
 fn build_app(app: &Application) {
     install_css();
-    build_panel(app);
-    build_dock(app);
 
     let args: Vec<String> = std::env::args().collect();
     match args.get(1).map(String::as_str) {
@@ -264,7 +262,10 @@ fn build_app(app: &Application) {
         Some("--store") => show_simple_app(app, "LunnaOS Central de Aplicativos", "Descubra aplicativos, jogos e ferramentas para o LunnaOS."),
         Some("--tasks") => show_simple_app(app, "Gerenciador de Tarefas", "CPU 28% · Memória 42% · Disco 9% · GPU 36% · Rede 12%"),
         Some("--games") => show_simple_app(app, "Lunna Games", "Solitaire · Patience · Tetris · Minesweeper · Snake · Sudoku"),
-        _ => {}
+        _ => {
+            build_panel(app);
+            build_dock(app);
+        }
     }
 }
 
