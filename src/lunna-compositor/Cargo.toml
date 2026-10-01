@@ -6,3 +6,4 @@ license = "Apache-2.0"
 description = "LunnaOS Wayland compositor foundation"
 
 [dependencies]
+smithay = "0.7"
