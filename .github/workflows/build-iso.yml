@@ -2,19 +2,20 @@ name: Build LunnaOS Polaris ISO
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - "iso.toml"
-      - ".github/workflows/build-iso.yml"
+  workflow_run:
+    workflows: ["Build LunnaOS Polaris"]
+    types: [completed]
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref || github.run_id }}
+  group: ${{ github.workflow }}
   cancel-in-progress: true
 
 jobs:
   build-iso:
     name: Build UEFI installer ISO
+    if: >
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.workflow_run.conclusion == 'success')
     runs-on: ubuntu-24.04
     permissions:
       contents: read
@@ -24,11 +25,20 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          ref: main
 
       - name: Maximize build space
         uses: ublue-os/remove-unwanted-software@v9
         with:
           remove-codeql: true
+
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build ISO
         id: build
