@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=LunnaOS Sel(l)enne
+Comment=LunnaOS custom desktop session
+Exec=labwc
+TryExec=labwc
+Type=Application
+DesktopNames=LunnaOS
