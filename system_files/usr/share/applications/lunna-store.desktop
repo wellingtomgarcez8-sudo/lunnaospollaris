@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=LunnaOS Central de Aplicativos
+Comment=LunnaOS application center
+Exec=lunna-shell --store
+Icon=software-store
+Terminal=false
+Type=Application
+Categories=Utility;
