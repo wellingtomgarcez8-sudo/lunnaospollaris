@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080">
+<defs>
+ <linearGradient id="sky" x2="0" y2="1"><stop stop-color="#03052b"/><stop offset=".55" stop-color="#16106b"/><stop offset="1" stop-color="#40106c"/></linearGradient>
+ <radialGradient id="glow"><stop stop-color="#d9a1ff" stop-opacity=".95"/><stop offset="1" stop-color="#7a20ff" stop-opacity="0"/></radialGradient>
+ <linearGradient id="lake" x2="0" y2="1"><stop stop-color="#210d5b"/><stop offset="1" stop-color="#05051e"/></linearGradient>
+</defs>
+<rect width="1920" height="1080" fill="url(#sky)"/>
+<circle cx="1420" cy="260" r="360" fill="url(#glow)"/>
+<path d="M0 620 L180 430 330 600 500 370 700 610 860 450 1050 610 1210 390 1400 610 1590 430 1770 600 1920 460 V760 H0Z" fill="#080b39"/>
+<path d="M0 720 L220 520 400 690 620 470 830 700 1050 520 1260 700 1450 500 1660 700 1840 530 1920 650 V820 H0Z" fill="#10135b"/>
+<path d="M0 770 Q500 690 960 790 T1920 760 V1080 H0Z" fill="url(#lake)"/>
+<g fill="#fff" opacity=".85">
+<circle cx="120" cy="120" r="2"/><circle cx="260" cy="210" r="2"/><circle cx="390" cy="90" r="2"/><circle cx="540" cy="180" r="2"/><circle cx="690" cy="80" r="2"/><circle cx="820" cy="240" r="2"/><circle cx="980" cy="110" r="2"/><circle cx="1120" cy="190" r="2"/><circle cx="1280" cy="80" r="2"/><circle cx="1490" cy="120" r="2"/><circle cx="1660" cy="220" r="2"/><circle cx="1800" cy="90" r="2"/>
+</g>
+<path d="M1410 120 A150 150 0 1 0 1520 370 A115 115 0 1 1 1410 120Z" fill="#f4dcff"/>
+<path d="M0 790 Q400 750 800 805 T1600 790 T1920 800" stroke="#d88cff" stroke-opacity=".6" fill="none" stroke-width="5"/>
+<text x="960" y="880" text-anchor="middle" fill="#ffffff" opacity=".96" font-family="sans-serif" font-size="78" font-weight="700">LunnaOS</text>
+<text x="960" y="935" text-anchor="middle" fill="#d9b8ff" font-family="sans-serif" font-size="26" letter-spacing="8">SELLENNE 1.0</text>
+</svg>
