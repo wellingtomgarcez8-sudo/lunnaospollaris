@@ -1,0 +1,6 @@
+#!/bin/sh
+set -eu
+
+# LunnaOS owns the visible desktop layer. Labwc is only the interim window-management
+# backend for this milestone; KDE Plasma and GNOME are not started.
+lunna-shell &
