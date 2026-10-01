@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=LunnaOS Settings
+Comment=LunnaOS system settings
+Exec=lunna-shell --settings
+Icon=preferences-system
+Terminal=false
+Type=Application
+Categories=Settings;System;
