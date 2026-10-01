@@ -1,0 +1,10 @@
+[package]
+name = "lunna-shell"
+version = "0.1.0"
+edition = "2021"
+license = "Apache-2.0"
+description = "LunnaOS Sel(l)enne desktop shell and system UI"
+
+[dependencies]
+gtk = { package = "gtk4", version = "0.11" }
+gtk4-layer-shell = "0.8.1"
