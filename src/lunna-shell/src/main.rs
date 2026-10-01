@@ -97,7 +97,7 @@ fn show_launcher(app: &Application) {
                 "Navegador" => "xdg-open https://www.google.com",
                 "Arquivos" => "lunna-files",
                 "Configurações" => "lunna-settings",
-                "Terminal" => "xterm",
+                "Terminal" => "foot",
                 "Lunna Store" => "lunna-store",
                 "Jogos" => "lunna-games",
                 _ => "true",
