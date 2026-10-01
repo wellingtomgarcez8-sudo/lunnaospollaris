@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Lunna Games
+Comment=LunnaOS integrated games
+Exec=lunna-shell --games
+Icon=applications-games
+Terminal=false
+Type=Application
+Categories=Game;
