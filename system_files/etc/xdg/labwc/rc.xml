@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<labwc_config>
+  <core>
+    <decoration>server</decoration>
+    <gap>0</gap>
+    <autoEnableOutputs>yes</autoEnableOutputs>
+    <primarySelection>yes</primarySelection>
+  </core>
+  <theme>
+    <cornerRadius>12</cornerRadius>
+    <keepBorder>yes</keepBorder>
+    <maximizedDecoration>none</maximizedDecoration>
+    <font place="ActiveWindow"><name>sans</name><size>10</size></font>
+    <font place="InactiveWindow"><name>sans</name><size>10</size></font>
+  </theme>
+  <keyboard>
+    <default />
+    <keybind key="W-d"><action name="Execute" command="lunna-shell" /></keybind>
+    <keybind key="W-r"><action name="Execute" command="lunna-shell --settings" /></keybind>
+    <keybind key="W-e"><action name="Execute" command="lunna-shell --files" /></keybind>
+  </keyboard>
+</labwc_config>
