@@ -1,0 +1,14 @@
+LunnaOS Polaris system files.
+
+The graphical environment will be installed here in later phases:
+- lunna-compositor
+- lunna-shell
+- lunna-panel
+- lunna-dock
+- lunna-settings
+- lunna-files
+- lunna-store
+- lunna-control-center
+- lunna-notifications
+- lunna-task-manager
+- lunna-login
