@@ -1,5 +1,6 @@
 [workspace]
 members = [
   "lunna-compositor",
+  "lunna-shell",
 ]
 resolver = "2"
