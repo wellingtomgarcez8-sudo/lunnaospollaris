@@ -1,0 +1,61 @@
+name: Build LunnaOS Polaris
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - "**/README.md"
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+env:
+  IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build immutable LunnaOS image
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Maximize build space
+        uses: ublue-os/remove-unwanted-software@v9
+        with:
+          remove-codeql: true
+
+      - name: Install Just
+        uses: extractions/setup-just@v3
+
+      - name: Validate shell scripts
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y shellcheck
+          just lint
+
+      - name: Build image
+        run: |
+          just build ${{ env.IMAGE_REGISTRY }}/lunnaospollaris latest
+
+      - name: Login to GHCR
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Push image
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        run: |
+          podman push ${{ env.IMAGE_REGISTRY }}/lunnaospollaris:latest
