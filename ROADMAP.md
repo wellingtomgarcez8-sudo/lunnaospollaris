@@ -1,60 +1,58 @@
 # LunnaOS Polaris roadmap
 
 ## Phase 0 — Foundation
-- [x] Bazzite-derived Containerfile
-- [x] Immutable image build workflow
+- [x] Bazzite-derived immutable image
+- [x] GitHub Actions image build
 - [x] UEFI ISO workflow
-- [x] ISO installer configuration
 - [x] Rust workspace
-- [x] Smithay dependency
-- [ ] First successful GitHub Actions image build
+- [x] Lunna Shell package
+- [x] Sel(l)enne wallpaper
+- [x] LunnaOS Wayland session
+- [x] Custom panel and dock
+- [x] Launcher foundation
+- [x] Action Center foundation
+- [x] Settings/Files/Store/Games application entry points
+- [ ] First successful CI image build
+- [ ] First successful UEFI ISO build
 
-## Phase 1 — Graphics
-- [ ] Smithay compositor
-- [ ] DRM/KMS outputs
+## Phase 1 — Native compositor
+- [ ] Replace bootstrap labwc session with native Lunna compositor
+- [ ] Smithay DRM/KMS backend
+- [ ] libseat/logind integration
 - [ ] libinput keyboard/mouse
-- [ ] XKB keyboard layouts
-- [ ] Wayland client support
-- [ ] basic window management
-- [ ] session startup
-- [ ] GPU acceleration validation
+- [ ] GPU accelerated rendering
+- [ ] XWayland compatibility
 
-## Phase 2 — Lunna Shell
-- [ ] top bar
-- [ ] dock
-- [ ] launcher
-- [ ] desktop widgets
-- [ ] wallpapers
-- [ ] window chrome
-- [ ] workspace model
-- [ ] animations
+## Phase 2 — Sel(l)enne Shell
+- [x] Top bar
+- [x] Dock
+- [x] Launcher
+- [x] Action Center
+- [ ] Notification Center
+- [ ] Weather/focus widgets
+- [ ] Desktop icons
+- [ ] Workspace switcher
+- [ ] Real media controls
+- [ ] Real network/audio/battery controls
+- [ ] Exact reference wallpaper assets
+- [ ] Motion/blur/glow polish
 
-## Phase 3 — System UI
-- [ ] Action Center
-- [ ] Notifications
-- [ ] Settings
-- [ ] power/battery
-- [ ] Wi-Fi
-- [ ] Bluetooth
-- [ ] audio
-- [ ] brightness
-- [ ] media controls
-
-## Phase 4 — Applications
-- [ ] Lunna Files
+## Phase 3 — Native Lunna Apps
+- [ ] Full Settings
+- [ ] Full Files
 - [ ] Lunna Store
-- [ ] Lunna Task Manager
-- [ ] Lunna Terminal
-- [ ] Lunna Camera
-- [ ] Lunna Games
-- [ ] Lunna Recovery
-- [ ] Lunna Updater
+- [ ] Task Manager
+- [ ] Terminal
+- [ ] Camera
+- [ ] Games
+- [ ] Recovery
+- [ ] Updater
 
-## Phase 5 — Release
-- [ ] Lunna login
-- [ ] Plymouth boot branding
-- [ ] UEFI installer polish
-- [ ] VM smoke tests
-- [ ] ISO artifact checksum
-- [ ] physical hardware test matrix
-- [ ] release documentation
+## Phase 4 — Release
+- [ ] Custom login/greeter
+- [ ] Plymouth branding
+- [ ] Installer branding
+- [ ] VM smoke-test workflow
+- [ ] Hardware validation matrix
+- [ ] ISO checksum/release job
+- [ ] Signed production image
