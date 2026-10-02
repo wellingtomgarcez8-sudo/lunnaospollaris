@@ -24,10 +24,16 @@ repos:
     path: /workspace/meta-lunnaos
 local_conf_header:
   lunnaos: |
+    PACKAGE_CLASSES = "package_rpm"
     IMAGE_INSTALL:append = " packagegroup-lunnaos"
+    IMAGE_FEATURES:append = " package-management"
     IMAGE_FSTYPES:append = " wic"
     WKS_FILE = "genericx86-64.wks"
     EFI_PROVIDER = "grub-efi"
+    PACKAGE_FEED_URIS = "https://raw.githubusercontent.com/wellingtomgarcez8-sudo/lunnaospollaris/rpm-repo"
+    PACKAGE_FEED_BASE_PATHS = "rpm"
+    PACKAGE_FEED_ARCHS = "all genericx86-64"
+    IMAGE_ROOTFS_EXTRA_SPACE = "1048576"
     KERNEL_LUNNAOS_VERSION ?= "6.18"
 target:
   - lunnaos-image

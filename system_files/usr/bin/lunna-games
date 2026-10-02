@@ -1,2 +1,2 @@
 #!/bin/sh
-exec /usr/bin/lunna-shell --games
+exec gnome-software --search=games "$@"

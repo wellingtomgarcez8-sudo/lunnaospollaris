@@ -14,7 +14,7 @@ on:
 
 concurrency:
   group: lunnaos-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   validate:
@@ -61,6 +61,10 @@ jobs:
           mkdir -p build output
           podman run --rm --privileged --userns=keep-id             --user "$(id -u):$(id -g)"             -e HOME=/tmp/lunnaos-home             -e BB_NUMBER_THREADS="$BB_NUMBER_THREADS"             -e PARALLEL_MAKE="$PARALLEL_MAKE"             -v "$PWD:/workspace"             lunnaos-builder
 
+      - name: Build RPM package index
+        run: |
+          podman run --rm --privileged --userns=keep-id             --user "$(id -u):$(id -g)"             -e HOME=/tmp/lunnaos-home             -v "$PWD:/workspace"             lunnaos-builder             kas build /workspace/kas/lunnaos.yml package-index
+
       - name: Validate generated image
         run: |
           test -n "$(find build/tmp/deploy/images/genericx86-64 -maxdepth 1 -type f -name '*.wic' -print -quit)"
@@ -75,3 +79,36 @@ jobs:
             build/tmp/deploy/images/genericx86-64/*.manifest
           if-no-files-found: error
           retention-days: 14
+
+      - name: Upload RPM feed
+        uses: actions/upload-artifact@v4
+        with:
+          name: LunnaOS-RPM-Feed
+          path: build/tmp/deploy/rpm/**
+          if-no-files-found: warn
+          retention-days: 14
+
+  publish-rpm-feed:
+    needs: build
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: rpm-repo
+          fetch-depth: 1
+
+      - name: Download RPM feed
+        uses: actions/download-artifact@v4
+        with:
+          name: LunnaOS-RPM-Feed
+          path: rpm
+
+      - name: Publish RPM repository
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add rpm
+          git commit -m "repo: update LunnaOS RPM feed" || exit 0
+          git push origin HEAD:rpm-repo
