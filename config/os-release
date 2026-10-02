@@ -1,0 +1,7 @@
+NAME="LunnaOS"
+ID=lunnaos
+ID_LIKE="poky"
+PRETTY_NAME="LunnaOS Polaris"
+VERSION="1.0"
+VERSION_CODENAME=Selienne
+HOME_URL="https://github.com/wellingtomgarcez8-sudo/lunnaospollaris"
