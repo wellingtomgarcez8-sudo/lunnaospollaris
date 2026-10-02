@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=LunnaOS
+Comment=LunnaOS GNOME Wayland session
+Exec=gnome-session
+Type=Application
+DesktopNames=GNOME;LunnaOS
