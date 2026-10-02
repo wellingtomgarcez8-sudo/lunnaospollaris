@@ -1,46 +1,62 @@
-name: LunnaOS Linux build
+name: Build LunnaOS Polaris
 
 on:
+  workflow_dispatch:
   push:
     branches: [main]
-  pull_request:
-  workflow_dispatch:
+    paths:
+      - '.github/workflows/**'
+      - 'kas/**'
+      - 'meta-lunnaos/**'
+      - 'config/**'
+      - 'scripts/**'
+      - 'Containerfile'
 
 concurrency:
-  group: lunnaos-build-${{ github.ref }}
+  group: lunnaos-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  image:
+  validate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate repository
+        run: |
+          chmod +x scripts/*.sh
+          ./scripts/validate.sh
+
+  build:
+    needs: validate
     runs-on: ubuntu-24.04
     timeout-minutes: 360
     permissions:
       contents: read
     steps:
       - uses: actions/checkout@v4
-
       - name: Install build dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y podman qemu-system-x86
-
+      - name: Build builder image
+        run: podman build --pull=always -t lunnaos-builder .
       - name: Build LunnaOS
         run: |
-          podman build -t lunnaos-builder .
-          podman run --rm --privileged --userns=keep-id --user "$(id -u):$(id -g)" \
+          mkdir -p build output
+          podman run --rm --privileged --userns=keep-id \
+            --user "$(id -u):$(id -g)" \
             -e HOME=/tmp/lunnaos-home \
             -v "$PWD:/workspace" \
             lunnaos-builder
-
-      - name: Locate image
+      - name: Validate generated image
         run: |
-          find build -type f \( -name '*.wic' -o -name '*.iso' -o -name '*.rootfs.*' \) -print
-
+          test -n "$(find build/tmp/deploy/images/genericx86-64 -maxdepth 1 -type f -name '*.wic' -print -quit)"
+          find build/tmp/deploy/images/genericx86-64 -maxdepth 1 -type f \( -name '*.wic' -o -name '*.manifest' \) -print
       - name: Upload LunnaOS image
         uses: actions/upload-artifact@v4
         with:
           name: LunnaOS-Polaris-x86_64
-          path: |
+          path:
             build/tmp/deploy/images/genericx86-64/*.wic
             build/tmp/deploy/images/genericx86-64/*.manifest
           if-no-files-found: error
