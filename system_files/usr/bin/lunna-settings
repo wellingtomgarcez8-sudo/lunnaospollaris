@@ -1,2 +1,2 @@
 #!/bin/sh
-exec /usr/bin/lunna-shell --settings
+exec gnome-control-center "$@"
