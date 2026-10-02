@@ -1,5 +1,5 @@
 name: Build LunnaOS Polaris
-# Fresh image build trigger
+# Optimized CI image build
 
 on:
   workflow_dispatch:
@@ -13,15 +13,19 @@ on:
       - 'scripts/**'
       - 'Containerfile'
 
+# A newer build replaces an older one. This prevents wasting runner time
+# when several commits arrive while Yocto is compiling.
 concurrency:
   group: lunnaos-${{ github.ref }}
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   validate:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
       - name: Validate repository
         run: |
           chmod +x scripts/*.sh
@@ -35,41 +39,60 @@ jobs:
       contents: read
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
 
-      - name: Restore Yocto build cache
+      # Yocto downloads and sstate are content-addressed. A stable cache key
+      # lets new commits reuse everything that is still valid instead of
+      # invalidating the whole cache whenever a recipe changes.
+      - name: Restore Yocto downloads and sstate
         uses: actions/cache@v4
         with:
           path: |
             build/downloads
             build/sstate-cache
-          key: yocto-${{ runner.os }}-${{ hashFiles('kas/**', 'meta-lunnaos/**', 'Containerfile') }}
+          key: yocto-${{ runner.os }}-scarthgap-genericx86-64
           restore-keys: |
-            yocto-${{ runner.os }}-
+            yocto-${{ runner.os }}-scarthgap-
 
       - name: Install build dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y podman qemu-system-x86
+          sudo apt-get install -y podman
 
       - name: Build builder image
-        run: podman build -t lunnaos-builder .
+        run: podman build --layers -t lunnaos-builder .
 
       - name: Build LunnaOS
         env:
           BB_NUMBER_THREADS: 4
           PARALLEL_MAKE: -j4
+          BB_FETCH_PREMIRRORONLY: "0"
         run: |
           mkdir -p build output
-          podman run --rm --privileged --userns=keep-id             --user "$(id -u):$(id -g)"             -e HOME=/tmp/lunnaos-home             -e BB_NUMBER_THREADS="$BB_NUMBER_THREADS"             -e PARALLEL_MAKE="$PARALLEL_MAKE"             -v "$PWD:/workspace"             lunnaos-builder
+          podman run --rm --privileged --userns=keep-id \
+            --user "$(id -u):$(id -g)" \
+            -e HOME=/tmp/lunnaos-home \
+            -e BB_NUMBER_THREADS="$BB_NUMBER_THREADS" \
+            -e PARALLEL_MAKE="$PARALLEL_MAKE" \
+            -e BB_FETCH_PREMIRRORONLY="$BB_FETCH_PREMIRRORONLY" \
+            -v "$PWD:/workspace" \
+            lunnaos-builder
 
       - name: Build RPM package index
         run: |
-          podman run --rm --privileged --userns=keep-id             --user "$(id -u):$(id -g)"             -e HOME=/tmp/lunnaos-home             -v "$PWD:/workspace"             lunnaos-builder             kas shell /workspace/kas/lunnaos.yml -c "bitbake package-index"
+          podman run --rm --privileged --userns=keep-id \
+            --user "$(id -u):$(id -g)" \
+            -e HOME=/tmp/lunnaos-home \
+            -v "$PWD:/workspace" \
+            lunnaos-builder \
+            kas shell /workspace/kas/lunnaos.yml -c "bitbake package-index"
 
       - name: Validate generated image
         run: |
           test -n "$(find build/tmp/deploy/images/genericx86-64 -maxdepth 1 -type f -name '*.wic' -print -quit)"
-          find build/tmp/deploy/images/genericx86-64 -maxdepth 1 -type f \( -name '*.wic' -o -name '*.manifest' \) -print
+          find build/tmp/deploy/images/genericx86-64 -maxdepth 1 -type f \
+            \( -name '*.wic' -o -name '*.manifest' \) -print
 
       - name: Upload LunnaOS image
         uses: actions/upload-artifact@v4
@@ -80,6 +103,7 @@ jobs:
             build/tmp/deploy/images/genericx86-64/*.manifest
           if-no-files-found: error
           retention-days: 14
+          compression-level: 0
 
       - name: Upload RPM feed
         uses: actions/upload-artifact@v4
@@ -88,6 +112,7 @@ jobs:
           path: build/tmp/deploy/rpm/**
           if-no-files-found: warn
           retention-days: 14
+          compression-level: 0
 
   publish-rpm-feed:
     needs: build
