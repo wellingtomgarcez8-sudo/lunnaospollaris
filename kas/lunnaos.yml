@@ -15,6 +15,7 @@ repos:
     branch: scarthgap
     layers:
       meta-oe:
+      meta-python:
       meta-networking:
       meta-multimedia:
       meta-gnome:
