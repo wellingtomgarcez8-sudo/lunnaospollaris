@@ -13,8 +13,6 @@ on:
       - 'scripts/**'
       - 'Containerfile'
 
-# A newer build replaces an older one. This prevents wasting runner time
-# when several commits arrive while Yocto is compiling.
 concurrency:
   group: lunnaos-${{ github.ref }}
   cancel-in-progress: true
@@ -42,9 +40,6 @@ jobs:
         with:
           fetch-depth: 1
 
-      # Yocto downloads and sstate are content-addressed. A stable cache key
-      # lets new commits reuse everything that is still valid instead of
-      # invalidating the whole cache whenever a recipe changes.
       - name: Restore Yocto downloads and sstate
         uses: actions/cache@v4
         with:
@@ -102,8 +97,10 @@ jobs:
             build/tmp/deploy/images/genericx86-64/*.wic
             build/tmp/deploy/images/genericx86-64/*.manifest
           if-no-files-found: error
-          retention-days: 14
-          compression-level: 0
+          retention-days: 7
+          # Level 3: much less CPU overhead than maximum compression,
+          # while avoiding the large storage footprint of level 0.
+          compression-level: 3
 
       - name: Upload RPM feed
         uses: actions/upload-artifact@v4
@@ -111,8 +108,8 @@ jobs:
           name: LunnaOS-RPM-Feed
           path: build/tmp/deploy/rpm/**
           if-no-files-found: warn
-          retention-days: 14
-          compression-level: 0
+          retention-days: 7
+          compression-level: 3
 
   publish-rpm-feed:
     needs: build
