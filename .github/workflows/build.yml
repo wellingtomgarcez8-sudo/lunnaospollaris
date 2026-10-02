@@ -63,7 +63,7 @@ jobs:
 
       - name: Build RPM package index
         run: |
-          podman run --rm --privileged --userns=keep-id             --user "$(id -u):$(id -g)"             -e HOME=/tmp/lunnaos-home             -v "$PWD:/workspace"             lunnaos-builder             kas build /workspace/kas/lunnaos.yml package-index
+          podman run --rm --privileged --userns=keep-id             --user "$(id -u):$(id -g)"             -e HOME=/tmp/lunnaos-home             -v "$PWD:/workspace"             lunnaos-builder             kas shell /workspace/kas/lunnaos.yml -c "bitbake package-index"
 
       - name: Validate generated image
         run: |
