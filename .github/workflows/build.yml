@@ -1,4 +1,5 @@
 name: Build LunnaOS Polaris
+# Fresh image build trigger
 
 on:
   workflow_dispatch:
