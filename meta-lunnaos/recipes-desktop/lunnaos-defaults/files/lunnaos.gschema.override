@@ -1,0 +1,11 @@
+[org.gnome.desktop.interface]
+color-scheme='prefer-dark'
+gtk-theme='Adwaita-dark'
+icon-theme='Adwaita'
+
+[org.gnome.desktop.background]
+picture-uri='file:///usr/share/backgrounds/lunnaos/lunnaos-background.xml'
+picture-uri-dark='file:///usr/share/backgrounds/lunnaos/lunnaos-background.xml'
+
+[org.gnome.shell]
+enabled-extensions=['lunnaos@lunnaos.org']
