@@ -19,7 +19,7 @@ repos:
       meta-multimedia:
       meta-gnome:
   meta-lunnaos:
-    path: ../meta-lunnaos
+    path: /workspace/meta-lunnaos
 local_conf_header:
   lunnaos: |
     IMAGE_INSTALL:append = " packagegroup-lunnaos"
