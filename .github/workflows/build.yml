@@ -27,9 +27,8 @@ jobs:
       - name: Build LunnaOS
         run: |
           podman build -t lunnaos-builder .
-          podman run --rm --privileged \
+          podman run --rm --privileged --user 0:0 \
             -v "$PWD:/workspace" \
-            -v "$HOME/.cache/lunnaos:/workspace/build/downloads" \
             lunnaos-builder
 
       - name: Locate image
