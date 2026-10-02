@@ -3,5 +3,5 @@
   "name": "LunnaOS Shell",
   "description": "Sel(l)enne visual layer for GNOME Shell",
   "version": 1,
-  "shell-version": ["48", "49"]
+  "shell-version": ["46"]
 }
