@@ -18,6 +18,7 @@ repos:
       meta-python:
       meta-networking:
       meta-multimedia:
+      meta-filesystems:
       meta-gnome:
   meta-lunnaos:
     path: /workspace/meta-lunnaos
