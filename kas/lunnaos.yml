@@ -1,7 +1,7 @@
 header:
   version: 14
 machine: genericx86-64
-distro: poky
+distro: lunnaos
 repos:
   poky:
     url: https://git.yoctoproject.org/poky
@@ -22,16 +22,10 @@ repos:
     path: ../meta-lunnaos
 local_conf_header:
   lunnaos: |
-    DISTRO = "poky"
-    DISTRO_NAME = "LunnaOS"
-    DISTRO_VERSION = "Polaris"
-    INIT_MANAGER = "systemd"
-    DISTRO_FEATURES:append = " systemd wayland opengl pam polkit bluetooth wifi"
-    DISTRO_FEATURES:remove = " x11"
     IMAGE_INSTALL:append = " packagegroup-lunnaos"
     IMAGE_FSTYPES:append = " wic"
     WKS_FILE = "genericx86-64.wks"
-    KERNEL_LOCALVERSION = "-lunnaos"
+    EFI_PROVIDER = "grub-efi"
     KERNEL_LUNNAOS_VERSION ?= "6.18"
 target:
   - lunnaos-image
