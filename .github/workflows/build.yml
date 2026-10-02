@@ -27,7 +27,7 @@ jobs:
       - name: Build LunnaOS
         run: |
           podman build -t lunnaos-builder .
-          podman run --rm --privileged --user 0:0 \
+          podman run --rm --privileged --userns=keep-id \
             -v "$PWD:/workspace" \
             lunnaos-builder
 
