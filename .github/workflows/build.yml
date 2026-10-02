@@ -59,18 +59,18 @@ jobs:
         run: podman build --layers -t lunnaos-builder .
 
       - name: Build LunnaOS
-        env:
-          BB_NUMBER_THREADS: 4
-          PARALLEL_MAKE: -j4
-          BB_FETCH_PREMIRRORONLY: "0"
         run: |
           mkdir -p build output
+          # Aggressive parallelism: keep the runner busy during both fetch and compile.
+          CPU_COUNT="$(nproc)"
+          BB_THREADS="$((CPU_COUNT * 2))"
+          MAKE_THREADS="$((CPU_COUNT * 2))"
           podman run --rm --privileged --userns=keep-id \
             --user "$(id -u):$(id -g)" \
             -e HOME=/tmp/lunnaos-home \
-            -e BB_NUMBER_THREADS="$BB_NUMBER_THREADS" \
-            -e PARALLEL_MAKE="$PARALLEL_MAKE" \
-            -e BB_FETCH_PREMIRRORONLY="$BB_FETCH_PREMIRRORONLY" \
+            -e BB_NUMBER_THREADS="$BB_THREADS" \
+            -e PARALLEL_MAKE="-j$MAKE_THREADS" \
+            -e BB_FETCH_PREMIRRORONLY="0" \
             -v "$PWD:/workspace" \
             lunnaos-builder
 
