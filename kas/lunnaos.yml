@@ -1,0 +1,35 @@
+header:
+  version: 14
+machine: qemux86-64
+distro: poky
+repos:
+  poky:
+    url: https://git.yoctoproject.org/poky
+    branch: scarthgap
+    layers:
+      meta:
+      meta-poky:
+      meta-yocto-bsp:
+  openembedded:
+    url: https://github.com/openembedded/meta-openembedded.git
+    branch: scarthgap
+    layers:
+      meta-oe:
+      meta-networking:
+      meta-multimedia:
+      meta-gnome:
+  meta-lunnaos:
+    path: ../meta-lunnaos
+local_conf_header:
+  lunnaos: |
+    DISTRO = "poky"
+    DISTRO_NAME = "LunnaOS"
+    DISTRO_VERSION = "Polaris"
+    INIT_MANAGER = "systemd"
+    DISTRO_FEATURES:append = " systemd wayland opengl pam polkit bluetooth wifi"
+    DISTRO_FEATURES:remove = " x11"
+    IMAGE_INSTALL:append = " packagegroup-lunnaos"
+    KERNEL_LOCALVERSION = "-lunnaos"
+    KERNEL_LUNNAOS_VERSION ?= "6.18"
+target:
+  - lunnaos-image
