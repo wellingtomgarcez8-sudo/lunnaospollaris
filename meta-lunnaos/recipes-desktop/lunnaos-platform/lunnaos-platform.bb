@@ -2,7 +2,7 @@ SUMMARY = "LunnaOS runtime integration and application launchers"
 LICENSE = "MIT"
 inherit allarch systemd
 
-RDEPENDS:${PN} = "bash gnome-control-center nautilus gnome-software flatpak dnf packagekit"
+RDEPENDS:${PN} = "bash gnome-control-center nautilus gnome-software flatpak dnf"
 
 SYSTEMD_SERVICE:${PN} = "lunnaos-firstboot.service"
 SYSTEMD_AUTO_ENABLE = "enable"
