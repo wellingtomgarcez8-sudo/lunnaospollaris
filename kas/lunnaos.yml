@@ -1,6 +1,6 @@
 header:
   version: 14
-machine: qemux86-64
+machine: genericx86-64
 distro: poky
 repos:
   poky:
@@ -29,6 +29,8 @@ local_conf_header:
     DISTRO_FEATURES:append = " systemd wayland opengl pam polkit bluetooth wifi"
     DISTRO_FEATURES:remove = " x11"
     IMAGE_INSTALL:append = " packagegroup-lunnaos"
+    IMAGE_FSTYPES:append = " wic"
+    WKS_FILE = "genericx86-64.wks"
     KERNEL_LOCALVERSION = "-lunnaos"
     KERNEL_LUNNAOS_VERSION ?= "6.18"
 target:
