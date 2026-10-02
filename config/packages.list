@@ -1,0 +1,13 @@
+gnome-shell
+gnome-session
+mutter
+gdm
+gnome-control-center
+gnome-settings-daemon
+gnome-software
+nautilus
+networkmanager
+pipewire
+wireplumber
+bluez5
+flatpak
