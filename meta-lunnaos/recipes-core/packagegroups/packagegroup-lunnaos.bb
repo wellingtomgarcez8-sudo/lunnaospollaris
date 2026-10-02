@@ -1,0 +1,4 @@
+SUMMARY = "LunnaOS desktop package set"
+LICENSE = "MIT"
+inherit packagegroup
+RDEPENDS:${PN} = "systemd dbus udev networkmanager bluez5 pipewire wireplumber mesa-dri mesa-vulkan-drivers wayland wayland-protocols gnome-shell gnome-session mutter gsettings-desktop-schemas gnome-control-center gnome-settings-daemon nautilus xdg-user-dirs xdg-utils flatpak polkit packagegroup-lunnaos-shell"
