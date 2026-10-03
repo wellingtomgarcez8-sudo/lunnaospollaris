@@ -83,11 +83,17 @@ jobs:
             lunnaos-builder \
             kas shell /workspace/kas/lunnaos.yml -c "bitbake package-index"
 
+      - name: Build ISO image
+        run: |
+          chmod +x scripts/09-iso.sh
+          ./scripts/09-iso.sh
+
       - name: Validate generated image
         run: |
           test -n "$(find build/tmp/deploy/images/genericx86-64 -maxdepth 1 -type f -name '*.wic' -print -quit)"
+          test -n "$(find build/tmp/deploy/images/genericx86-64 -maxdepth 1 -type f -name '*.iso' -print -quit)"
           find build/tmp/deploy/images/genericx86-64 -maxdepth 1 -type f \
-            \( -name '*.wic' -o -name '*.manifest' \) -print
+            \( -name '*.wic' -o -name '*.iso' -o -name '*.manifest' \) -print
 
       - name: Upload LunnaOS image
         uses: actions/upload-artifact@v4
@@ -95,7 +101,9 @@ jobs:
           name: LunnaOS-Polaris-x86_64
           path: |
             build/tmp/deploy/images/genericx86-64/*.wic
+            build/tmp/deploy/images/genericx86-64/*.iso
             build/tmp/deploy/images/genericx86-64/*.manifest
+            output/LunnaOS-Polaris-x86_64.iso
           if-no-files-found: error
           retention-days: 7
           # Level 3: much less CPU overhead than maximum compression,
